@@ -18,18 +18,25 @@ USER= antroenker
 CC= g++
 CFLAGS= -g -std=c++11
 
-all:	bibleajax.cgi PutCGI PutHTML
+all:	testreader
+# bibleajax.cgi PutCGI PutHTML
 
 # TODO: For bibleajax.cgi, add dependencies to include
 # compiled classes from Project 1 to be linked into the executable program
-bibleajax.cgi:	bibleajax.o Ref.o Verse.o Bible.o
-	$(CC) $(CFLAGS) -o bibleajax.cgi bibleajax.o Ref.o Verse.o Bible.o -lcgicc
+# bibleajax.cgi:	bibleajax.o Ref.o Verse.o Bible.o
+	# $(CC) $(CFLAGS) -o bibleajax.cgi bibleajax.o Ref.o Verse.o Bible.o -lcgicc
 	# -l option is necessary to link with cgicc library
 
 # main program to handle AJAX/CGI requests for Bible references
-bibleajax.o:	bibleajax.cpp
-	$(CC) $(CFLAGS) -c bibleajax.cpp
+# bibleajax.o:	bibleajax.cpp
+	# $(CC) $(CFLAGS) -c bibleajax.cpp
 
+testreader: testreader.o Ref.o Verse.o Bible.o
+	$(CC) $(CFLAGS) -o testreader testreader.o Ref.o Verse.o Bible.o
+
+testreader.o : testreader.cpp Ref.h Verse.h Bible.h
+	$(CC) $(CFLAGS) -c testreader.cpp
+	
 # TODO: copy targets to build classes from Project 1:
 # Bible.o, Ref.o, Verse.o
 

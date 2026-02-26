@@ -46,10 +46,6 @@ int main (int argc, char **argv)
     // Create a reference from the numbers
     Ref ref(bookNum, chapterNum, verseNum);
 
-	cout << "Last Offset added: " 
-     << static_cast<long long>(webBible.getLastOffset()) 
-     << endl;
-
     // Loop to display the requested number of verses
     for (int i = 0; i < numOfVerses; i++) {
 
@@ -63,8 +59,9 @@ int main (int argc, char **argv)
 
         // Display the verse
         verse.display();
-        cout << endl;
-		
+        // cout << endl;
+		// cout << webBible.lookup() << endl;
+		cout << "Last Offset added: " << webBible.getLastOffset() << endl;
 		
         // Get the next reference for the next loop iteration
         ref = webBible.next(ref, result);

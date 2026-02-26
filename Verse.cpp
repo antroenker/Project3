@@ -36,16 +36,15 @@ Verse::Verse(const string s)
 // The "clean" constructor, purpose is to store verseRef, and verseText
 Verse::Verse(Ref r, string text)
 {
-		verseRef = r;
-		verseText = text;
+	verseRef = r;
+	verseText = text;
 		
-		// Removes leading space if needed
-		if (!verseText.empty() && verseText[0] == ' ')
-		{
-				verseText.erase(0, 1);
-		}
+	// Removes leading space if needed
+	if (!verseText.empty() && verseText[0] == ' ')
+	{
+		verseText.erase(0, 1);
+	}
 }
-
 // REQUIRED: Accessors
 string Verse::getVerse()
 {
@@ -64,5 +63,4 @@ void Verse::display()
    cout << " " << verseText << endl;
    // use <br> so html can read \n as a newline
    // cout << "<br>\n";
-   cout << "Debug" << endl;
 }
