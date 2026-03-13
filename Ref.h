@@ -45,7 +45,6 @@ class Ref
       bool operator==(const Ref &) const;
 	  
       // OPTIONAL: < and > comparisons for Ref objects might also be useful
-   
 	  bool operator>(const Ref &) const;
 	  bool operator<(const Ref &) const;
    

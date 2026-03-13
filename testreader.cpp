@@ -61,7 +61,6 @@ int main (int argc, char **argv)
         verse.display();
         // cout << endl;
 		// cout << webBible.lookup() << endl;
-		cout << "Last Offset added: " << webBible.getLastOffset() << endl;
 		
         // Get the next reference for the next loop iteration
         ref = webBible.next(ref, result);
@@ -71,5 +70,6 @@ int main (int argc, char **argv)
             return 1;
         }
     }
+	cout << "Last Offset added: " << webBible.getLastOffset() << endl;
     return 0;
 }

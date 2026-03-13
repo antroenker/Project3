@@ -56,7 +56,7 @@ const std::string Ref::bookNames[] = {
 		"Haggai",
 		"Zechariah",
 		"Malachi",
-		"Mathew",
+		"Matthew",
 		"Mark",
 		"Luke",
 		"John",
