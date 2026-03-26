@@ -18,7 +18,7 @@ USER= antroenker
 CC= g++
 CFLAGS= -g -std=c++11
 
-all:	testreader
+all:	lookupserver  testreader
 # bibleajax.cgi PutCGI PutHTML
 
 # TODO: For bibleajax.cgi, add dependencies to include
@@ -34,9 +34,10 @@ all:	testreader
 testreader: testreader.o Ref.o Verse.o Bible.o
 	$(CC) $(CFLAGS) -o testreader testreader.o Ref.o Verse.o Bible.o
 
-testreader.o : testreader.cpp Ref.h Verse.h Bible.h
-	$(CC) $(CFLAGS) -c testreader.cpp
-	
+#New Target for Lookup Server
+lookupserver : lookupserver.o Bible.o Ref.o Verse.o fifo.o
+	$(CC) $(CFLAGS) -o lookupserver lookupserver.o Bible.o Ref.o Verse.o fifo.o
+
 # TODO: copy targets to build classes from Project 1:
 # Bible.o, Ref.o, Verse.o
 
@@ -52,6 +53,18 @@ Verse.o : Ref.h Verse.h Verse.cpp
 Bible.o : Ref.h Verse.h Bible.h Bible.cpp
 	$(CC) $(CFLAGS) -c Bible.cpp
 
+#testreader Object
+testreader.o : testreader.cpp Ref.h Verse.h Bible.h
+	$(CC) $(CFLAGS) -c testreader.cpp
+
+#fifo Object
+fifo.o : fifo.h fifo.cpp
+	$(CC) $(CFLAGS) -c fifo.cpp
+
+#lookupserver Object
+lookupserver.o : lookupserver.cpp fifo.h Bible.h Ref.h Verse.h
+	$(CC) $(CFLAGS) -c lookupserver.cpp
+
 PutCGI:	bibleajax.cgi
 	chmod 755 bibleajax.cgi
 	cp bibleajax.cgi /var/www/html/class/csc3004/$(USER)/cgi-bin
@@ -66,4 +79,4 @@ PutHTML:
 	ls -l /var/www/html/class/csc3004/$(USER)
 
 clean:
-	rm -f *.o core bibleajax.cgi
+	rm -f *.o core bibleajax.cgi lookupserver
