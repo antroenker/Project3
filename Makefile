@@ -18,23 +18,22 @@ USER= antroenker
 CC= g++
 CFLAGS= -g -std=c++11
 
-all:	lookupserver  testreader
+all:	lookupserver  testreader bibleajax.cgi
 # bibleajax.cgi PutCGI PutHTML
 
 # TODO: For bibleajax.cgi, add dependencies to include
 # compiled classes from Project 1 to be linked into the executable program
-# bibleajax.cgi:	bibleajax.o Ref.o Verse.o Bible.o
-	# $(CC) $(CFLAGS) -o bibleajax.cgi bibleajax.o Ref.o Verse.o Bible.o -lcgicc
+bibleajax.cgi:	bibleajax.o fifo.o
+	$(CC) $(CFLAGS) -o bibleajax.cgi bibleajax.o fifo.o -lcgicc
 	# -l option is necessary to link with cgicc library
 
 # main program to handle AJAX/CGI requests for Bible references
-# bibleajax.o:	bibleajax.cpp
-	# $(CC) $(CFLAGS) -c bibleajax.cpp
+bibleajax.o:	bibleajax.cpp fifo.h
+	$(CC) $(CFLAGS) -c bibleajax.cpp
 
 testreader: testreader.o Ref.o Verse.o Bible.o
 	$(CC) $(CFLAGS) -o testreader testreader.o Ref.o Verse.o Bible.o
 
-#New Target for Lookup Server
 lookupserver : lookupserver.o Bible.o Ref.o Verse.o fifo.o
 	$(CC) $(CFLAGS) -o lookupserver lookupserver.o Bible.o Ref.o Verse.o fifo.o
 

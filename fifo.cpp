@@ -28,10 +28,10 @@ Fifo::Fifo(string name){
   int result = mknod(pipename.c_str(),MODE | S_IFIFO, 0);
 
   if ((result == -1) && (errno != EEXIST)) {
-    cout << "Error creating pipe: " << name << endl;
+    cerr << "Error creating pipe: " << name << endl;
     return;
   }
-  cout << "Success creating pipe: " << name << endl;
+  cerr << "Success creating pipe: " << name << endl;
   fd = 0;
   return;
 
@@ -75,48 +75,40 @@ void Fifo::fifoclose() {
 
 // Receive a message from a FIFO (named pipe)
 string Fifo::recv() {
-  if (fd ==0) {
-    cout << "Fifo not open for read: " << pipename << endl;
-    return ("");
-  }
-
-  int length, i;
-  string message;
-  bool done;
-  int bytes;
-  char inbuff;
-
-  // clear message buffer
-  message = "";
-  // read until we see an end of message line
-  done = false;
-  i = 0;
-
-  while (i<MaxMess && !done) {
-    // Read the next character in the fifo
-    bytes = read(fd, &inbuff,1);
-
-    // -1 means something isn't working
-    if (bytes ==-1) {
-      cout << "Error - bad read on input pipe: " << pipename << endl;
-      return("");
+    if (fd == 0) {
+        cout << "Fifo not open for read: " << pipename << endl;
+        return "";
     }
-    // check if nothing was read
-    if (bytes > 0) {
-      // Check if end of message
-      if (inbuff == MESSTERM && (i > 0)) {
-	done = true;
-      } else {
-	i++;
-	message += inbuff;
-      }
-    } else {
-      // Nothing to read, try to open
-      fifoclose();
-      openread();
+
+    string message = "";
+    char inbuff;
+    int bytes;
+    bool done = false;
+    int i = 0;
+
+    while (i < MaxMess && !done) {
+        bytes = read(fd, &inbuff, 1);
+
+        if (bytes == -1) {
+            cout << "Error - bad read on input pipe: " << pipename << endl;
+            return "";
+        }
+
+        if (bytes == 0) {
+            // Writer closed pipe — end of message
+            done = true;
+        }
+        else {
+            if (inbuff == MESSTERM && i > 0) {
+                done = true;
+            } else {
+                message += inbuff;
+                i++;
+            }
+        }
     }
-  }
-  return(message);
+
+    return message;
 }
 
 // Send a message to a FIFO (named pipe)
@@ -130,8 +122,8 @@ void Fifo::send(string message) {
   int bytes;
 
   // Append end of message terminator
-  message = message + MESSTERM;
-  bytes = write(fd, message.c_str(),message.length());
+  message.push_back(MESSTERM);
+  bytes = write(fd, message.c_str(),message.size());
   if (bytes ==-1) {
     cout << "Error - bad write on output pipe: " << pipename << endl;
     return;

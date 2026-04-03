@@ -73,9 +73,10 @@
      // callback function
      XMLHttp.onreadystatechange=function()
      {
-        if (XMLHttp.readyState == XMLHttp.DONE)
+        if (XMLHttp.readyState == XMLHttp.DONE){
            document.getElementById('response_area').innerHTML = XMLHttp.responseText;
            // DEMO: alert("readystatechange with readyState " + XMLHttp.readyState);
+		}
      }
 
      XMLHttp.send(null); // sends standard input to server,

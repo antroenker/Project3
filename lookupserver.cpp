@@ -19,15 +19,23 @@ using namespace std;
 int main (int argc, char **argv)
 {
     Bible webBible("/home/class/csc3004/Bibles/web-complete");
-
+	
     while (true)
     {
-        // Request Pipe
-        Fifo request("request");
-        request.openread();
+        
+		// Request Pipe
+		Fifo request("request");
+		request.openread();
 		
         string message = request.recv();
-        cout << "Received: " << message << endl;
+        cerr << "Received: " << message << endl;
+		request.fifoclose();
+
+		if (message.empty()) 
+		{
+        usleep(100000); 
+        continue;
+		}
 
         string replyMessage;
 
@@ -110,12 +118,12 @@ int main (int argc, char **argv)
                 }
             }
         }
-
         // Reply Pipe
-        Fifo reply("reply");
-        reply.openwrite();
+		Fifo reply("reply");
+		reply.openwrite();
         reply.send(replyMessage);
-        cout << "Sent: " << replyMessage << endl;
+        cerr << "Sent: " << replyMessage << endl;
+		reply.fifoclose();
     }
 
     return 0;

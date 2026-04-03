@@ -69,7 +69,7 @@ void Bible::buildTextIndex()
 	
     fin.close();
 	
-	cout << "Index build. Total verses indexed: " << refs.size() << endl;
+	cerr << "Index build. Total verses indexed: " << refs.size() << endl;
 }
 
 streampos Bible::getLastOffset() const 
